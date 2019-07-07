@@ -94,18 +94,18 @@ t.tic()
 
 data_loader = ImageDataLoader(train_path, train_gt_path, shuffle=True, gt_downsample=True, pre_load=True)
 data_loader_val = ImageDataLoader(val_path, val_gt_path, shuffle=False, gt_downsample=True, pre_load=True)
-best_mae = sys.maxint
+best_mae = sys.maxsize
 
 for epoch in range(start_step, end_step+1):    
     step = -1
     train_loss = 0
-    for blob in data_loader:                
+    for blob in data_loader:
         step = step + 1        
         im_data = blob['data']
         gt_data = blob['gt_density']
-        density_map = net(im_data, gt_data)
+        density_map = net.forward(im_data, gt_data)
         loss = net.loss
-        train_loss += loss.data[0]
+        train_loss += loss.item()
         step_cnt += 1
         optimizer.zero_grad()
         loss.backward()

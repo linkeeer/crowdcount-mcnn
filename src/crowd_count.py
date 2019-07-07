@@ -1,6 +1,6 @@
 import torch.nn as nn
-import network
-from models import MCNN
+from src import network
+from src.models import MCNN
 
 
 class CrowdCounter(nn.Module):
@@ -15,7 +15,7 @@ class CrowdCounter(nn.Module):
     
     def forward(self,  im_data, gt_data=None):        
         im_data = network.np_to_variable(im_data, is_cuda=True, is_training=self.training)                
-        density_map = self.DME(im_data)
+        density_map = self.DME.forward(im_data)
         
         if self.training:                        
             gt_data = network.np_to_variable(gt_data, is_cuda=True, is_training=self.training)            
